@@ -1,0 +1,149 @@
+<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#ModalAddForm">
+    Add New User
+    </button>
+
+<table class="table table-striped" [mfData]="data" #mf="mfDataTable" [mfRowsOnPage]="5">
+    <thead>
+        <tr>
+            <th>
+                <mfDefaultSorter by="id">Id</mfDefaultSorter>
+            </th>
+            <th>
+                <mfDefaultSorter by="name">Name</mfDefaultSorter>
+            </th>
+            <th>
+                <mfDefaultSorter by="age">Age</mfDefaultSorter>
+            </th>
+            <th>
+                <mfDefaultSorter by="contact">Contact</mfDefaultSorter>
+            </th>
+            <th colspan="2">
+                <mfDefaultSorter by="actions">Actions</mfDefaultSorter>
+            </th>
+        </tr>
+    </thead>
+    <tbody *ngIf="users">
+        <tr *ngFor="let item of users">
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.age}}</td>
+            <td>{{item.phoneNumber}}</td>
+            <td>
+                <button type="button" class="btn btn-primary btn-md" (click)="editUser(item)">Edit</button>
+                <button type="button" class="btn btn-primary btn-md" (click)="deleteUser(item)">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4">
+                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+
+
+<!--Add Popup-->
+<div id="ModalAddForm" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title text-xs-center">Add User</h4>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="angularForm" novalidate (submit)="addUser()">
+                    <div class="form-group">
+                        <label>Name:</label>
+                        <input class="form-control" formControlName="name" type="text">
+                    </div>
+                    <div *ngIf="angularForm.controls['name'].invalid && (angularForm.controls['name'].dirty || angularForm.controls['name'].touched)"
+                        class="alert alert-danger">
+                        <div *ngIf="angularForm.controls['name'].errors.required">
+                            Name is required.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Age:</label>
+                        <input class="form-control" formControlName="age" type="number">
+                    </div>
+                    <div *ngIf="angularForm.controls['age'].invalid && (angularForm.controls['age'].dirty || angularForm.controls['age'].touched)"
+                        class="alert alert-danger">
+                        <div *ngIf="angularForm.controls['age'].errors.required">
+                            Age is required.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact:</label>
+                        <input class="form-control" formControlName="phoneNumber" type="text">
+                    </div>
+                    <div *ngIf="angularForm.controls['phoneNumber'].invalid && (angularForm.controls['phoneNumber'].dirty || angularForm.controls['phoneNumber'].touched)"
+                        class="alert alert-danger">
+                        <div *ngIf="angularForm.controls['phoneNumber'].errors.required">
+                            Contact is required.
+                        </div>
+                    </div>
+                    <button type="submit" [disabled]="angularForm.pristine || angularForm.invalid" class="btn btn-success">
+              Add
+          </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Edit Popup-->
+<div id="ModalEditForm" class="modal" [ngStyle]="{'display':editDisplay}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" (click)="closeEdit()">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title text-xs-center">Edit User</h4>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="editForm" novalidate (submit)="updateUser()">
+                    <div class="form-group">
+                        <label>Name:</label>
+                        <input class="form-control" formControlName="name" type="text">
+                    </div>
+                    <div *ngIf="editForm.controls['name'].invalid && (editForm.controls['name'].dirty || editForm.controls['name'].touched)"
+                        class="alert alert-danger">
+                        <div *ngIf="editForm.controls['name'].errors.required">
+                            Name is required.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Age:</label>
+                        <input class="form-control" formControlName="age" type="number">
+                    </div>
+                    <div *ngIf="editForm.controls['age'].invalid && (editForm.controls['age'].dirty || editForm.controls['age'].touched)"
+                        class="alert alert-danger">
+                        <div *ngIf="editForm.controls['age'].errors.required">
+                            Age is required.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact:</label>
+                        <input class="form-control" formControlName="phoneNumber" type="text">
+                    </div>
+                    <div *ngIf="editForm.controls['phoneNumber'].invalid && (editForm.controls['phoneNumber'].dirty || editForm.controls['phoneNumber'].touched)"
+                        class="alert alert-danger">
+                        <div *ngIf="editForm.controls['phoneNumber'].errors.required">
+                            Contact is required.
+                        </div>
+                    </div>
+                    <button type="submit" [disabled]="editForm.pristine || editForm.invalid" class="btn btn-success">
+              Edit
+          </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
