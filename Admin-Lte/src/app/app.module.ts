@@ -4,6 +4,7 @@ import { DataTableModule } from "angular-6-datatable";
 import { HttpModule } from "@angular/http";
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
+import { Routes, RouterModule } from "@angular/router";
 
 import { AppComponent } from './app.component';
 import { AppheaderComponent } from './components/home/appheader/appheader.component';
@@ -15,6 +16,12 @@ import { HomeComponent } from './components/home/home.component';
 import { ApptableComponent } from './components/home/apptable/apptable.component';
 
 import { UsersService } from "./services/users.service";
+
+
+const appRoute = Routes[
+  {path:'/home', component:ApptableComponent},
+  {path:'/', redirectTo:'/home', pathMatch:'full'}
+]
 
 @NgModule({
   declarations: [
@@ -33,7 +40,8 @@ import { UsersService } from "./services/users.service";
     HttpModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule.forRoot(appRoute)
   ],
   providers: [UsersService],
   bootstrap: [AppComponent]

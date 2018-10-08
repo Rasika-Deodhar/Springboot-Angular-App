@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../../../models/user';
 import { UsersService } from "../../../services/users.service";
+import { Router } from "@angular/router";
 // import {NgbModal} from "./modal";
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -19,7 +20,7 @@ export class ApptableComponent implements OnInit {
   user:any;
   users:any;
 
-  constructor(private usersData:UsersService, private fb: FormBuilder) {
+  constructor(private usersData:UsersService, private fb: FormBuilder, private router:Router) {
 
     this.usersData.getAllUsers().subscribe(data=>{
       this.users=data;
@@ -43,7 +44,10 @@ export class ApptableComponent implements OnInit {
    }
 
   ngOnInit() {
-    
+    this.usersData.getAllUsers().subscribe(data=>{
+      this.users=data;
+      console.log(data);
+    });
   }
 
   editUser(user:any){
@@ -51,20 +55,26 @@ export class ApptableComponent implements OnInit {
     this.usersData.getUserById(user.id).subscribe(data=>{
       this.editForm.setValue(data);});
     // this.editForm.setValue(this.user);
+    this.router.navigateByUrl('/');
   }
 
   updateUser(){
     this.usersData.updateUser(this.editForm.value).subscribe(data=>this.users=data);
+    this.editDisplay='block';
+    this.router.navigateByUrl('/');
   }
 
    addUser() {
      this.user=this.angularForm.value;
      this.usersData.addUser(this.user).subscribe(data=>this.users=data);
+    this.closeEdit();
+    //  this.router.navigateByUrl('/');
   }
 
   deleteUser(user:any){
     console.log(user);
     this.usersData.deleteUser(user.id).subscribe(data=>this.users=data);
+    this.router.navigateByUrl('/');
   }
 
   closeEdit(){
